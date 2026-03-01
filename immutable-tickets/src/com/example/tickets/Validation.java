@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public final class Validation {
 
-    private static final Pattern EMAIL = Pattern.compile("^[^@\s]+@[^@\s]+\.[^@\s]+$");
+    private static final Pattern EMAIL = Pattern.compile("^[^@]+@[^@]+\\.[^@]+$");
     private static final Pattern TICKET_ID = Pattern.compile("^[A-Z0-9-]+$");
 
     private Validation() {}
@@ -31,6 +31,11 @@ public final class Validation {
         if (!EMAIL.matcher(email).matches()) {
             throw new IllegalArgumentException(fieldName + " must be a valid email");
         }
+    }
+
+    public static void requireOptionalEmail(String email, String fieldName) {
+        if (email == null) return; // optional
+        requireEmail(email, fieldName);
     }
 
     public static void requireTicketId(String id) {
